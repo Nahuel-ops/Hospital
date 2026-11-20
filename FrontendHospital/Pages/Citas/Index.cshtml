@@ -1,0 +1,127 @@
+@page
+@model FrontendHospital.Pages.Citas.IndexModel
+@{
+    ViewData["Title"] = "Citas Médicas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-danger mb-0"><i class="bi bi-calendar-check-fill me-2"></i>Citas Médicas</h2>
+        <small class="text-muted">Total programadas: <strong>@Model.TotalRegistros</strong> citas</small>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        @Model.Mensaje
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-danger text-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-plus-fill me-2"></i>Agendar Cita</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="NuevaCita.IdPaciente" class="form-label fw-semibold">Paciente</label>
+                        <select asp-for="NuevaCita.IdPaciente" class="form-select" required>
+                            <option value="">-- Selecciona un paciente --</option>
+                            @foreach (var p in Model.PacientesDisponibles)
+                            {
+                                <option value="@p.Id">@p.Nombre @p.Apellido</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NuevaCita.IdMedico" class="form-label fw-semibold">Médico Especialista</label>
+                        <select asp-for="NuevaCita.IdMedico" class="form-select" required>
+                            <option value="">-- Selecciona un médico --</option>
+                            @foreach (var m in Model.MedicosDisponibles)
+                            {
+                                <option value="@m.Id">Dr(a). @m.Nombre @m.Apellido (@m.Especialidad)</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-6">
+                            <label asp-for="NuevaCita.Fecha" class="form-label fw-semibold">Fecha</label>
+                            <input asp-for="NuevaCita.Fecha" type="date" class="form-control" required />
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="NuevaCita.Hora" class="form-label fw-semibold">Hora</label>
+                            <input asp-for="NuevaCita.Hora" type="time" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="NuevaCita.Comentario" class="form-label fw-semibold">Motivo / Comentario</label>
+                        <textarea asp-for="NuevaCita.Comentario" rows="2" class="form-control" placeholder="Describe el motivo de la consulta" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill">
+                        Confirmar Cita
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-danger text-danger">
+                        <tr>
+                            <th>Fecha y Hora</th>
+                            <th>Paciente</th>
+                            <th>Médico</th>
+                            <th>Motivo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ListaCitas)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">@item.Fecha.ToString("dd/MM/yyyy")</div>
+                                    <small class="text-danger fw-semibold">@item.Hora.ToString("HH:mm")</small>
+                                </td>
+                                <td class="fw-semibold">@item.Paciente?.Nombre @item.Paciente?.Apellido</td>
+                                <td>
+                                    <div>Dr(a). @item.Medico?.Nombre @item.Medico?.Apellido</div>
+                                    <small class="text-muted">@item.Medico?.Especialidad</small>
+                                </td>
+                                <td>@item.Comentario</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.TotalPaginas > 1)
+            {
+                <div class="card-footer bg-white py-3 d-flex justify-content-between align-items-center">
+                    <span class="small text-muted">Página @Model.PaginaActual de @Model.TotalPaginas</span>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            @for (int i = 1; i <= Model.TotalPaginas; i++)
+                            {
+                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                    <a class="page-link @(i == Model.PaginaActual ? "bg-danger border-danger text-white" : "text-danger")"
+                                       asp-page="/Citas/Index" asp-route-pagina="@i">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>

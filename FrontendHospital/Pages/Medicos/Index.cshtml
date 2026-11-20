@@ -1,0 +1,97 @@
+@page
+@model FrontendHospital.Pages.Medicos.IndexModel
+@{
+    ViewData["Title"] = "Médicos";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-danger mb-0"><i class="bi bi-person-badge-fill me-2"></i>Plantel Médico</h2>
+        <small class="text-muted">Total registrados: <strong>@Model.TotalRegistros</strong> médicos</small>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Mensaje))
+{
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        @Model.Mensaje
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-danger text-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-plus-circle-fill me-2"></i>Nuevo Médico</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    <div class="mb-3">
+                        <label asp-for="NuevoMedico.Nombre" class="form-label fw-semibold">Nombre</label>
+                        <input asp-for="NuevoMedico.Nombre" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NuevoMedico.Apellido" class="form-label fw-semibold">Apellido</label>
+                        <input asp-for="NuevoMedico.Apellido" class="form-control" required />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="NuevoMedico.Telefono" class="form-label fw-semibold">Teléfono</label>
+                        <input asp-for="NuevoMedico.Telefono" type="number" class="form-control" required />
+                    </div>
+                    <div class="mb-4">
+                        <label asp-for="NuevoMedico.Especialidad" class="form-label fw-semibold">Especialidad</label>
+                        <input asp-for="NuevoMedico.Especialidad" class="form-control" placeholder="Ej. Cardiología, Pediatría..." required />
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100 fw-bold rounded-pill">
+                        Registrar Médico
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-danger text-danger">
+                        <tr>
+                            <th>Médico</th>
+                            <th>Especialidad</th>
+                            <th>Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ListaMedicos)
+                        {
+                            <tr>
+                                <td class="fw-semibold">Dr(a). @item.Nombre @item.Apellido</td>
+                                <td><span class="badge bg-danger bg-opacity-10 text-danger">@item.Especialidad</span></td>
+                                <td>@item.Telefono</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (Model.TotalPaginas > 1)
+            {
+                <div class="card-footer bg-white py-3 d-flex justify-content-between align-items-center">
+                    <span class="small text-muted">Página @Model.PaginaActual de @Model.TotalPaginas</span>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            @for (int i = 1; i <= Model.TotalPaginas; i++)
+                            {
+                                <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                                    <a class="page-link @(i == Model.PaginaActual ? "bg-danger border-danger text-white" : "text-danger")"
+                                       asp-page="/Medicos/Index" asp-route-pagina="@i">@i</a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            }
+        </div>
+    </div>
+</div>

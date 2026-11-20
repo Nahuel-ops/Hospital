@@ -1,10 +1,58 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="p-5 mb-4 bg-danger text-white rounded-4 shadow-sm">
+    <div class="container-fluid py-3">
+        <h1 class="display-5 fw-bold"><i class="bi bi-heart-pulse-fill me-2"></i>Sistema de Gestión Hospitalaria</h1>
+        <p class="col-md-8 fs-5 opacity-90">
+            Administra pacientes, médicos especialistas y citas médicas de forma segura mediante autenticación JWT.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <a asp-page="/Pacientes/Index" class="btn btn-light text-danger btn-lg fw-bold px-4 rounded-pill shadow-sm">
+                <i class="bi bi-people-fill me-1"></i> Pacientes
+            </a>
+            <a asp-page="/Medicos/Index" class="btn btn-outline-light btn-lg fw-bold px-4 rounded-pill">
+                <i class="bi bi-person-badge-fill me-1"></i> Médicos
+            </a>
+            <a asp-page="/Citas/Index" class="btn btn-outline-light btn-lg fw-bold px-4 rounded-pill">
+                <i class="bi bi-calendar-check-fill me-1"></i> Citas Médicas
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="text-danger fs-2 mb-2"><i class="bi bi-people-fill"></i></div>
+                <h5 class="card-title fw-bold">Pacientes</h5>
+                <p class="card-text text-muted">Registro clínico con edad, datos personales y enfermedades de base.</p>
+                <a asp-page="/Pacientes/Index" class="btn btn-outline-danger btn-sm rounded-pill fw-semibold">Ir a Pacientes</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="text-danger fs-2 mb-2"><i class="bi bi-person-badge-fill"></i></div>
+                <h5 class="card-title fw-bold">Médicos</h5>
+                <p class="card-text text-muted">Plantel médico organizado por especialidad y contacto directo.</p>
+                <a asp-page="/Medicos/Index" class="btn btn-outline-danger btn-sm rounded-pill fw-semibold">Ir a Médicos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <div class="text-danger fs-2 mb-2"><i class="bi bi-calendar-check-fill"></i></div>
+                <h5 class="card-title fw-bold">Citas</h5>
+                <p class="card-text text-muted">Programación de consultas vinculando paciente, médico, fecha y hora.</p>
+                <a asp-page="/Citas/Index" class="btn btn-outline-danger btn-sm rounded-pill fw-semibold">Ir a Citas</a>
+            </div>
+        </div>
+    </div>
 </div>

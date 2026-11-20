@@ -1,44 +1,82 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var usuarioNombre = Context.Session.GetString("UsuarioNombre");
+}
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - FrontendHospital</title>
+    <title>@ViewData["Title"] - Hospital VidaRoja</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://jsdelivr.net" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/FrontendHospital.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="bg-light d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger border-bottom border-danger-subtle shadow-sm py-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">FrontendHospital</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <a class="navbar-brand fw-bold text-white d-flex align-items-center gap-2" asp-area="" asp-page="/Index">
+                    <i class="bi bi-hospital-fill"></i>
+                    <span>Hospital VidaRoja</span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="navbar-collapse collapse d-lg-inline-flex justify-content-end">
+                    <ul class="navbar-nav align-items-center gap-2">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link px-3 rounded-pill fw-medium text-white" asp-page="/Index">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link px-3 rounded-pill fw-medium text-white bg-white bg-opacity-10" asp-page="/Pacientes/Index">Pacientes</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 rounded-pill fw-medium text-white bg-white bg-opacity-10" asp-page="/Medicos/Index">Médicos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link px-3 rounded-pill fw-medium text-white bg-white bg-opacity-10" asp-page="/Citas/Index">Citas</a>
+                        </li>
+
+                        @if (!string.IsNullOrEmpty(usuarioNombre))
+                        {
+                            <li class="nav-item ms-lg-3">
+                                <span class="nav-link text-white fw-semibold">
+                                    <i class="bi bi-person-circle me-1"></i> @usuarioNombre
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-light text-danger btn-sm rounded-pill px-3 fw-bold shadow-sm" asp-page="/Auth/Logout">
+                                    Cerrar Sesión
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-lg-3">
+                                <a class="nav-link px-3 rounded-pill fw-medium text-white" asp-page="/Auth/Login">Iniciar Sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-light text-danger btn-sm rounded-pill px-3 fw-bold shadow-sm" asp-page="/Auth/Registro">Registrarse</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <div class="container my-5 flex-grow-1">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - FrontendHospital - <a asp-area="" asp-page="/Privacy">Privacy</a>
+    <footer class="bg-white border-top py-3 text-muted small mt-auto">
+        <div class="container d-flex justify-content-between align-items-center">
+            <span>&copy; 2026 <strong class="text-danger">Hospital VidaRoja</strong> - Gestión Médica Integral</span>
+            <span class="text-secondary">Tema Rojo · Razor Pages + Web API JWT</span>
         </div>
     </footer>
 
